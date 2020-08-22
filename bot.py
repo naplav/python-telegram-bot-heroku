@@ -22,16 +22,25 @@ def start(update, context):
 
     driver.get('https://www.hurryupde.com//aproducts.php')
     while True:
-       time.sleep(20)
+       time.sleep(30)
+       web_content = get_webpage_content('https://www.hurryupde.com//aproducts.php')
+       last_mod_time = str(get_last_modified_time(web_content)) # update when it was created last.
+       
+       hurryup_df = get_hurryup_df(web_content) # create the dataframe
+       hurryup_df["mod_time"] = [last_mod_time]*hurryup_df.shape[0]
+
+       print hurryup_df["mod_time"]
+
        driver.refresh()
+
     driver.quit()
 	
     web_content = get_webpage_content('https://www.hurryupde.com//aproducts.php') # get the page source
     last_mod_time = str(get_last_modified_time(web_content)) # update when it was created last.
-    hurryup_df = get_worldometer_df(web_content) # create the dataframe
+    hurryup_df = get_hurryup_df(web_content) # create the dataframe
     hurryup_df["mod_time"] = [last_mod_time]*hurryup_df.shape[0]
 
-    print hurryup_df
+    print hurryup_df["mod_time"]
 
 
 #def help(update, context):
